@@ -45,6 +45,7 @@
 # Local AI assistant/session artifacts
 .reasonix/
 reasonix.toml
+.claude/settings.local.json
 
 # Gradle cache directory
 .gradle/
