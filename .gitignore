@@ -42,6 +42,10 @@
 # Visual Studio cache directory
 .vs/
 
+# Local AI assistant/session artifacts
+.reasonix/
+reasonix.toml
+
 # Gradle cache directory
 .gradle/
 

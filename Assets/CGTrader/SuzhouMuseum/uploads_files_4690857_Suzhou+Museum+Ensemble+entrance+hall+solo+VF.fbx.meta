@@ -3,7 +3,132 @@ guid: 65f8c5b3e5fd7aa4cbf3d68e79e684fa
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Aluminium_01__inoxydable
+    second: {fileID: 2100000, guid: e5899ac0f4f496c4bb2ee098cb9e70c2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Aluminium_grey_metal
+    second: {fileID: 2100000, guid: 8e5cb264d71d03a45a5fda290a5d437f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Dark_shiny_tile
+    second: {fileID: 2100000, guid: 514129f548149ab4abb219f63926569a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Dark_stone_no_tile
+    second: {fileID: 2100000, guid: 57ab2c2286dd9ad4aa7b663660b2952a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Exterior_ground_tiles
+    second: {fileID: 2100000, guid: 1053cb8b6408f0744b1619bb115b0cf7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Exterior_ground_tiles1
+    second: {fileID: 2100000, guid: 2bac8c3b36f3b0b4fbe07d4be0ae7301, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Exterior_ground_tiles2
+    second: {fileID: 2100000, guid: 7a5ee37858251ee419f3ea381b84e339, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Exterior_ground_tiles3
+    second: {fileID: 2100000, guid: a535f683f6887f848a0839e0c288e107, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Exterior_ground_tiles4
+    second: {fileID: 2100000, guid: fd2191784d288f941a482978d25aa33c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Exterior_ground_tiles5
+    second: {fileID: 2100000, guid: 28c4dd3f8516c4a4c94e64ca3ec991d8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: FrontColor
+    second: {fileID: 2100000, guid: 5d6a0e0923de37249a30d6d7b5da14f8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Glass
+    second: {fileID: 2100000, guid: b816a08ea1d52bc448dde6945f7859c6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Granite_grey_tiles
+    second: {fileID: 2100000, guid: b8a54fa446b9de64db243789538b587e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Granite_grey_tiles1
+    second: {fileID: 2100000, guid: 3ee43150f1bdb014594416c07cde5e8c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Granite_grey_tiles2
+    second: {fileID: 2100000, guid: 29a36ef5e5821f942b83548f9ec708df, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Grey_ston_rect_tiles
+    second: {fileID: 2100000, guid: 6e78bdca122aed84895cada527231a25, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Grey_ston_rect_tiles1
+    second: {fileID: 2100000, guid: 43386dcae0c267645bd619be78a836d4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Grey_stone_no_tile_Shanxi
+    second: {fileID: 2100000, guid: f49f0eef300d9a144b0d608f6ebbc259, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Light_in_display
+    second: {fileID: 2100000, guid: 6374989f3e2f73d4faa3c5688e67072c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Pure_black
+    second: {fileID: 2100000, guid: 9958ce27fc96cb34eb548b90693bb32c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Steel_inox
+    second: {fileID: 2100000, guid: 7244620a04cb1ae409d5eee537f95076, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Translucent_glass
+    second: {fileID: 2100000, guid: 6d051cd965eec1c4f8657e8354ca416a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: White_Stucco_walls
+    second: {fileID: 2100000, guid: 53ef1cb411d10644d9966a608d6c0f01, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: White_joint_tiles
+    second: {fileID: 2100000, guid: 647fe0473c83aea47903280c928e53a6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wood_solar_screen
+    second: {fileID: 2100000, guid: 9d199ee4e35cfa545a0f16d437305a60, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
