@@ -87,7 +87,7 @@ public class PhysicalCC : MonoBehaviour
 
 			if (hit.transform.tag == "Platform")
 				platformVelocity = hit.collider.attachedRigidbody == null | !platformAction ?
-				 Vector3.zero : hit.collider.attachedRigidbody.velocity;
+				 Vector3.zero : hit.collider.attachedRigidbody.linearVelocity;
 
 			if (Physics.BoxCast(transform.position, new Vector3(cc.radius / 2.5f, cc.radius / 3f, cc.radius / 2.5f),
 						Vector3.down, out RaycastHit helpHit, transform.rotation, cc.height / 2 - cc.radius / 2))
