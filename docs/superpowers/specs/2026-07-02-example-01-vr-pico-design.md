@@ -2,115 +2,176 @@
 
 ## Goal
 
-Configure `Assets/Scenes/Example_01.unity` as a VR-ready exhibition scene that works on PICO devices and can also be tested in the Unity Editor using keyboard and mouse simulation.
+Configure `Assets/Scenes/Example_01.unity` as a complete VR-ready exhibition scene that works in both target environments:
 
-The scene should support both locomotion styles:
+- Unity Editor Play Mode without a headset, using XR Device Simulator keyboard/mouse simulation.
+- PICO headset runtime, using the project's existing OpenXR/PICO configuration.
 
-- Continuous movement and turning for exhibition roaming.
-- Ray-based teleportation for comfort and fast navigation.
+The scene should support comfortable exhibition roaming, quick testing during development, and reliable final-device validation.
 
 ## Current Project Context
 
 The project already contains the required XR packages and assets:
 
-- XR Interaction Toolkit 3.4.1
-- OpenXR 1.16.1
-- PICO OpenXR package
-- XR Management
-- XR Device Simulator sample assets
-- `Assets/Scenes/Example_01.unity` is already included in Build Settings.
+- Unity 6.4.11f1 project using URP.
+- XR Interaction Toolkit 3.4.1.
+- OpenXR 1.16.1.
+- PICO OpenXR package.
+- XR Management.
+- XR Device Simulator sample assets.
+- `Assets/Scenes/Example_01.unity` is already part of the project and has pending scene edits in the working tree.
 
-`Example_01.unity` already contains an `EventSystem` and an `XR Interaction Manager`, so the implementation should extend the existing scene rather than rebuild it from scratch.
+The project also has existing portal scripts:
+
+- `Assets/Scripts/ScenePortal.cs`
+- `Assets/Scripts/ScenePortalTrigger.cs`
+
+The implementation should preserve existing exhibition content, lighting, materials, portals, and collaborator edits. Scene-level XR setup should be preferred over unrelated global project setting changes.
 
 ## Recommended Approach
 
-Use Unity's XR Interaction Toolkit starter prefabs and simulator assets:
+Use Unity's XR Interaction Toolkit starter prefabs and simulator assets as the shared interaction stack for both Editor simulation and PICO runtime:
 
 - `Assets/Samples/XR Interaction Toolkit/3.4.1/Starter Assets/Prefabs/XR Origin (XR Rig).prefab`
 - `Assets/Samples/XR Interaction Toolkit/3.4.1/XR Device Simulator/XR Device Simulator.prefab`
 
-This keeps PICO runtime behavior and Editor simulation on the same OpenXR/XRI interaction stack.
+This approach keeps movement, controller rays, teleportation, and UI interaction on standard XRI/OpenXR components, reducing device-specific scene logic.
 
 ## Scene Architecture
 
 `Example_01.unity` should contain these functional objects:
 
 ```text
-XR Interaction Manager
-EventSystem
-XR Origin (XR Rig)
-XR Device Simulator
-Teleportation Area / Teleportation Anchors
-Scene geometry, lights, and existing exhibition content
+Example_01
+├─ XR Interaction Manager
+├─ EventSystem
+├─ XR Origin (XR Rig)
+│  ├─ Camera Offset
+│  │  └─ Main Camera
+│  ├─ Left Controller
+│  └─ Right Controller
+├─ XR Device Simulator
+├─ Teleportation Areas / Anchors
+├─ ScenePortal / ScenePortalTrigger objects
+└─ Existing exhibition geometry, lights, materials, colliders, and content
 ```
 
-The XR Origin becomes the active player rig. If the scene has a legacy non-XR camera, it should be disabled or removed to avoid duplicate cameras or duplicate Audio Listeners.
+Key rules:
 
-## Locomotion
+- `XR Origin (XR Rig)` is the active player rig and the only active player camera source.
+- Legacy non-XR cameras should be disabled if they would create duplicate active cameras or duplicate Audio Listeners.
+- Existing `XR Interaction Manager` and `EventSystem` should be reused when present.
+- The `EventSystem` should use an XR-compatible input module for XR UI interaction.
+- Existing exhibition content should remain in place unless it directly blocks XR validation.
 
-Continuous locomotion should be enabled through the XR Origin starter asset setup:
+## Locomotion and Teleportation
 
-- Left controller stick: move.
-- Right controller stick: turn.
-- Camera follows the headset pose on device.
+The scene should enable both locomotion styles:
 
-Teleportation should be enabled through XR Interaction Toolkit teleport components:
+- Continuous movement for natural exhibition roaming.
+- Ray-based teleportation for comfort, accessibility, and fast navigation.
 
-- Add `Teleportation Area` to valid walkable floors, or use `Teleportation Anchor` for specific target points.
-- Ensure walkable surfaces have colliders so ray interactors can hit them.
+Recommended components:
 
-Both systems should remain active unless they conflict in testing.
+- `ContinuousMoveProvider` on the XR Origin.
+- `SnapTurnProvider` on the XR Origin as the default turning mode, because snap turning is usually more comfortable in VR.
+- `TeleportationProvider` on the XR Origin.
+- `TeleportationArea` on valid walkable floor surfaces.
+- `TeleportationAnchor` near important positions such as exhibit viewpoints, doors, or scene portals when precise placement is useful.
 
-## PICO Compatibility
+Walkable surfaces need colliders so controller rays and teleportation rays can hit them. If a floor mesh lacks a collider, add an appropriate collider before adding teleportation support.
 
-The implementation should not overwrite global OpenXR settings unless required. The project already includes PICO OpenXR support, and recent collaborator updates changed XR settings. The scene-level work should therefore rely on standard XRI/OpenXR components and preserve existing package/project settings.
+## Editor Keyboard/Mouse Simulation
 
-Expected PICO behavior:
-
-- Launch scene with XR Origin camera.
-- PICO controllers drive XRI controller actions.
-- Continuous movement and teleportation use the same XRI input actions as Editor simulation.
-
-## Keyboard and Mouse Simulation
-
-Add the XR Device Simulator prefab to `Example_01.unity` for Editor testing.
+Add the XR Device Simulator prefab to `Example_01.unity` for headset-free development testing.
 
 Expected Editor behavior:
 
-- Press Play without a PICO headset.
-- Use the XR Device Simulator UI and controls to simulate headset/controller movement.
-- Use keyboard and mouse to aim/select with simulated controllers.
-- Test continuous movement, ray interaction, and teleportation inside the Editor.
+1. Open `Assets/Scenes/Example_01.unity`.
+2. Press Play without connecting a PICO headset.
+3. Use XR Device Simulator controls to simulate headset/controller pose.
+4. Use keyboard/mouse input to aim, select, move, turn, and teleport.
+5. Confirm the simulator UI and input bindings are usable in Play Mode.
 
-The exact key bindings are controlled by the XR Device Simulator input actions and UI shown during Play Mode.
+This lets scene layout, movement, teleportation, and portal logic be tested quickly before deploying to hardware.
+
+## PICO Runtime Compatibility
+
+The implementation should rely on standard XR Interaction Toolkit and OpenXR components so the same scene works on PICO.
+
+Expected PICO behavior:
+
+- The scene starts from the XR Origin camera.
+- PICO headset pose drives the XR camera.
+- PICO controllers drive XRI controller actions.
+- Continuous movement, snap turning, ray interaction, and teleportation work through the same XRI action setup as Editor simulation.
+
+Global OpenXR/PICO settings should not be overwritten as part of this scene task unless validation proves the scene cannot run without a specific setting change. Any required global setting change should be called out separately before modifying it.
+
+## Portal Compatibility
+
+Existing `ScenePortal` and `ScenePortalTrigger` behavior should continue to work with the XR Origin.
+
+The current portal logic identifies the player through `Camera.main`, active cameras, XR Origin / XR Rig / Player root names, or trigger colliders. The VR scene setup should therefore:
+
+- Keep the XR camera tagged or discoverable as the main player camera.
+- Avoid duplicate active cameras that could confuse portal activation.
+- Ensure the XR Origin's colliders or camera proximity can trigger scene portals as intended.
 
 ## Error Handling and Validation
 
-Implementation should check for these issues:
+The setup and validation flow should check for these issues:
 
-- Duplicate `Main Camera` or duplicate `Audio Listener` after adding XR Origin.
-- Missing colliders on floor/walkable geometry.
+- Missing `XR Origin (XR Rig)`.
+- Missing `XR Device Simulator`.
 - Missing or duplicated `XR Interaction Manager`.
-- EventSystem using a non-XR input module instead of XR-compatible UI input.
-- XR Device Simulator prefab missing references to simulator input actions.
+- Missing `EventSystem` or non-XR UI input module.
+- Duplicate active cameras or duplicate active Audio Listeners.
+- Missing locomotion components.
+- Missing teleportation provider or missing teleportation areas.
+- Missing colliders on intended walkable surfaces.
+- Broken prefab references or missing XRI sample assets.
 
 ## Testing Plan
 
-Manual Editor tests:
+### Editor tests
 
-1. Open `Example_01.unity`.
-2. Press Play in Unity Editor.
-3. Confirm XR Device Simulator appears and can control view/controller pose.
-4. Confirm continuous movement works.
-5. Confirm ray teleportation works on configured floor areas.
-6. Confirm there are no console errors related to XR input, duplicate cameras, or missing references.
+1. Open `Assets/Scenes/Example_01.unity`.
+2. Press Play without a PICO headset.
+3. Confirm no console errors related to missing XR references, input actions, duplicate cameras, or duplicate Audio Listeners.
+4. Confirm XR Device Simulator can control headset and controller pose.
+5. Confirm continuous movement works.
+6. Confirm snap turning works.
+7. Confirm ray teleportation works on configured walkable surfaces.
+8. Confirm existing scene portals still load their target scenes when approached or triggered.
 
-Device tests:
+### PICO device tests
 
-1. Build/run to PICO using existing OpenXR/PICO project configuration.
-2. Confirm the scene starts with the XR Origin camera.
-3. Confirm PICO controllers can move, turn, raycast, and teleport.
+1. Confirm `Example_01.unity` is included in Build Settings.
+2. Build/run to PICO using the existing OpenXR/PICO configuration.
+3. Confirm the scene starts with the XR Origin camera.
+4. Confirm headset tracking works.
+5. Confirm PICO controllers can move, turn, raycast, and teleport.
+6. Confirm no startup errors or controller binding failures appear.
+7. Confirm performance is acceptable for exhibition navigation.
 
 ## Scope Boundaries
 
-This change should modify only what is needed for `Example_01.unity` VR readiness. It should avoid unrelated changes to other scenes, global XR settings, or collaborator work unless Unity requires a scene dependency update.
+This design is limited to making `Assets/Scenes/Example_01.unity` VR-ready for Editor simulation and PICO runtime.
+
+In scope:
+
+- Add or repair XR Origin setup.
+- Add XR Device Simulator for Editor testing.
+- Configure continuous movement, snap turning, and teleportation.
+- Ensure floor colliders/teleportation surfaces exist where needed.
+- Preserve and verify existing scene portal behavior.
+- Add focused Editor automation or validation if useful.
+
+Out of scope unless separately requested:
+
+- Redesigning all exhibition content.
+- Rebuilding lighting or materials across the whole project.
+- Replacing the global XR/OpenXR/PICO configuration.
+- Optimizing every scene in the project.
+- Creating new exhibit UI/interaction systems beyond what is required for VR movement and teleportation.
